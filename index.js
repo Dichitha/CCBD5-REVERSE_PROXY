@@ -58,7 +58,7 @@
     let options = {
       headers: {
         'origin': 'http://localhost:9000',
-        'destination' : arr[turn]
+        // 'destination' : arr[turn]
       }
       
     };
