@@ -14,18 +14,33 @@ router1.get('/', async (req, res, next) => {
       [API_KEY_NAME]: API_KEY_VALUE,
       ...url.parse(req.url, true).query,
     })
-    console.log(url.parse(req.url));
     console.log(req.get('host'));
-    //const apiRes = await needle('get', `${API_BASE_URL}?${params}`)
-    //const data = apiRes.body
-
+    var data = "yeahhhhhhh"
+    // const apiRes = await needle('get', `${API_BASE_URL}?${params}`)
+    // const data = apiRes.body
+    if (req.get('host') === "localhost:5001"){
+      function print() {
+      res.status(200).send(data);
+      }
+      setTimeout(print, 0);
+    }
+    else if(req.get('host') === "localhost:5002"){
+      function print() {
+        res.status(200).send(data);
+        }
+        setTimeout(print, 0);
+    }
+    else if(req.get('host') === "localhost:5003"){
+      function print() {
+        res.status(200).send(data);
+        }
+        setTimeout(print, 0);
+    }
     // function print() {
     //   res.status(200).send(data);
     // }
-    // setTimeout(print, 3000);
-    //res.status(200).send(data);
-    data="yeahhhh"
-    res.status(200).send(data);
+    // setTimeout(print, 1500);
+    // res.status(200).send(data);
   }
   catch (error) {
     next(error)
