@@ -15,6 +15,7 @@ const ALPHA = 0.2;
 
 let hits = 0;
 let misses = 0;
+let cache =  Array(12);
 
 http.createServer(function (req, res) {
   let finalurl;
@@ -25,9 +26,20 @@ http.createServer(function (req, res) {
   if (count === 1) {
     startTime = Date.now();
   }
-
+  // let number = 10
   const localStartTime = Date.now();
-
+  console.log(req.url)
+  let number = req.url.split('=')[1]
+  console.log("count = ",count)
+  console.log("in cachhe ", cache[number%12])
+  if(cache[number%12]!=undefined && cache[number%12]["number"]==number)
+  {
+    hits++;
+    console.log(number," present with data ",cache[number%12]);
+    res.end();
+  }
+  else{
+    console.log();
   const rtrn_values = queueInsert(parsedUrl);
   turn = rtrn_values.serverturn;
   finalurl = rtrn_values.final_url;
@@ -49,6 +61,10 @@ http.createServer(function (req, res) {
         // res.write(JSON.stringify(result.data));
         console.log("yesss");
         const localEndTime = Date.now() - localStartTime;
+        cache[number%12]={number:number,data:result.data.data}
+        console.log("in axios = ",cache[number%12]['number'])
+        // console.log("in axios = ",number,result.data.data)
+
         queueRemove(req_count, turn, localEndTime);
         hits++;
         res.end(); 
@@ -62,6 +78,19 @@ http.createServer(function (req, res) {
     misses++;
     res.end(); 
   }
+  
+}
+if (Queues[0].queueCount === 0 && Queues[1].queueCount === 0 && Queues[2].queueCount === 0) {
+  endTime = Date.now();
+  console.log("Timeeeeeeeeeeeeeeeeeeee: " + (endTime - startTime) + " milliseconds");
+
+  const totalRequests = hits + misses;
+  const hitRate = (hits / totalRequests) * 100;
+  const missRate = (misses / totalRequests) * 100;
+  console.log("Hit Rate: " + hitRate + "%");
+  console.log("Miss Rate: " + missRate+ "%");
+}
+
 
 }).listen(9009, () => {
   console.log('HTTP server listening on port 9009');
