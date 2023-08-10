@@ -9,6 +9,7 @@ const API_KEY_VALUE = process.env.API_KEY_VALUE
 
 
 router.get('/', async (req, res, next) => {
+  // console.log(req)
   try {
     const params = new URLSearchParams({
       [API_KEY_NAME]: API_KEY_VALUE,
@@ -18,7 +19,7 @@ router.get('/', async (req, res, next) => {
     const apiRes = await needle('get', `${API_BASE_URL}?${params}`)
     const data = apiRes.body
 
-    res.status(200).json(data)
+    res.send(data)
   } catch (error) {
     next(error)
   }
