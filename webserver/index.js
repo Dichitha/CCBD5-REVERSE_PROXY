@@ -11,7 +11,6 @@ var options = {
   optionsSuccessStatus: 200
 };
 
-
 app.use((req, res, next) => {
   if (options.origin === req.headers.origin) {
     next();
@@ -19,12 +18,6 @@ app.use((req, res, next) => {
     res.status(403).json({ error: 'Forbidden' });
   }
 });
-
-// app.use((req, res, next) => {
-//   server_port = req.headers.destination;
-//   console.log(req.headers.destination);
-//   next();
-// });
 
 app.use('/api', require('./apiroute'));
 
